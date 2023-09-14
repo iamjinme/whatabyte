@@ -5,8 +5,11 @@ import 'dotenv/config';
 import { itemsRouter } from './items/items.router';
 import { errorHandler } from './middleware/error.middleware';
 import { notFoundHandler } from './middleware/not-found.middleware';
+import RedisProvider from "./common/redis.provider";
 
 require('dotenv').config();
+
+RedisProvider.getClient();
 
 if (!process.env.PORT) process.exit(1);
 

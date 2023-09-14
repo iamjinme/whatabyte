@@ -1,4 +1,7 @@
 import { BaseItem, Item, Items } from "./items.interface";
+import ShortUniqueId from 'short-unique-id';
+
+const uid = new ShortUniqueId({ dictionary: 'number', length: 10 });
 
 /**
  * In memory store
@@ -35,7 +38,7 @@ export const findAll = async (): Promise<Item[]> => Object.values(items);
 export const find = async (id: number): Promise<Item> => items[id];
 
 export const create = async (newItem: BaseItem): Promise<Item> => {
-  const id = new Date().valueOf();
+  const id: number = parseInt(uid.rnd(), 10) // or new Date().valueOf();
 
   items[id] = {
     id,

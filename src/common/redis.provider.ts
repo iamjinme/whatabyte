@@ -25,7 +25,7 @@ export default class Redis {
 
   private constructor() {};
 
-  public static async getClient(): Promise<RedisClientType> {
+  public static getClient(): RedisClientType {
     if (!Redis.client) {
       console.log('Redis client created');
       Redis.client = createClient({
@@ -35,9 +35,8 @@ export default class Redis {
             port: REDIS_PORT,
         }
       });
-      console.log('Redis client cached');
-      await Redis.client.connect();
     }
+    console.log('Redis client cached');
     return Redis.client;
   };
 };

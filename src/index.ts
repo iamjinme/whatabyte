@@ -9,7 +9,7 @@ import RedisProvider from "./common/redis.provider";
 
 require('dotenv').config();
 
-RedisProvider.getClient();
+const redisClient = RedisProvider.getClient();
 
 if (!process.env.PORT) process.exit(1);
 
@@ -26,6 +26,15 @@ app.use('/api/menu/items', itemsRouter);
 app.use(errorHandler);
 app.use(notFoundHandler);
 
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+const start = async () => {
+  try {
+    await redisClient.connect();
+    app.listen(PORT, () => {
+      console.log(`Server connected to redis and listening on port ${PORT}`);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+start();

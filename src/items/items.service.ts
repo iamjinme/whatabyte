@@ -1,4 +1,5 @@
 import { BaseItem, Item, Items } from "./items.interface";
+import modelItems from "./items.model";
 import ShortUniqueId from 'short-unique-id';
 
 const uid = new ShortUniqueId({ dictionary: 'number', length: 10 });
@@ -33,32 +34,18 @@ let items: Items = {
 /**
  * Service methods
  */
-export const findAll = async (): Promise<Item[]> => Object.values(items);
+export const findAll = async (): Promise<Item[]> => modelItems.getAllItems();
 
-export const find = async (id: number): Promise<Item> => items[id];
+export const find = async (id: number): Promise<Item> => modelItems.getItem(id);
 
-export const create = async (newItem: BaseItem): Promise<Item> => {
-  const id: number = parseInt(uid.rnd(), 10) // or new Date().valueOf();
-
-  items[id] = {
-    id,
-    ...newItem,
-  };
-
-  return items[id];
-};
+export const create = async (newItem: BaseItem): Promise<Item> => modelItems.createItem(newItem);
 
 export const update = async (id: number, itemUpdate: BaseItem): Promise<Item | null> => {
   const item = await find(id);
 
   if (!item) return null;
 
-  items[id] = {
-    id,
-    ...itemUpdate
-  };
-
-  return items[id];
+  return await modelItems.updateItem(id, itemUpdate);
 };
 
 export const remove = async (id: number): Promise<null | void> => {
@@ -66,5 +53,5 @@ export const remove = async (id: number): Promise<null | void> => {
 
   if (!item) return null;
 
-  delete items[id];
+  modelItems.deleteItem(id);
 };

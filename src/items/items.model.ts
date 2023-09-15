@@ -30,7 +30,7 @@ class Items {
     return { id, ...item };
   };
   async updateItem(id: number, item: BaseItem): Promise<Item> {
-    const updated = await client.hSet('items', id.toString(), JSON.stringify(item));
+    const updated = await client.hSet('items', id.toString(), JSON.stringify({id, ...item}));
     return { id, ...item}
   };
   async deleteItem(id: number): Promise<null | void> {
